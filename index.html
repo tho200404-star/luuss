@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cửa Hàng Trải Nghiệm Di Sản Văn Hóa Việt Nam</title>
+    <style>
+        /* --- ĐỊNH NGHĨA BIẾN & THEME DI SẢN --- */
+        :root {
+            --primary-color: #8C2D19;    /* Đỏ ngói rêu phong, gạch nung cổ */
+            --primary-hover: #601E10;    /* Đỏ cung đình trầm */
+            --secondary-color: #D9A241;  /* Vàng rơm, ánh đèn lồng cổ */
+            --dark-color: #241D1C;       /* Gỗ mun trầm */
+            --light-color: #FAF7F2;      /* Trắng ngà giấy dó */
+            --card-bg: #FFFFFF;
+            --text-main: #3A3230;
+            --text-muted: #7A6F6D;
+            --border-color: #E8E2D5;
+            --shadow-sm: 0 2px 8px rgba(36, 29, 28, 0.06);
+            --shadow-md: 0 10px 25px rgba(140, 45, 25, 0.08);
+            --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        /* --- RESET STYLE CƠ BẢN --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-main);
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--light-color);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* --- THANH ĐIỀU HƯỚNG (HEADER) --- */
+        header {
+            background-color: var(--primary-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border-bottom: 3px solid var(--secondary-color);
+        }
+
+        .header-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            background: rgba(255,255,255,0.1);
+            padding: 0.4rem;
+            border-radius: 50%;
+            border: 1px solid var(--secondary-color);
+        }
+
+        .logo-text h1 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: var(--secondary-color);
+        }
+
+        .logo-text p {
+            font-size: 0.75rem;
+            color: #FFF;
+            opacity: 0.85;
+            text-transform: uppercase;
+        }
+
+        nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: #FFF;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            padding: 0.5rem 0.8rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        nav a:hover, nav a.active {
+            color: var(--secondary-color);
+            background: rgba(255,255,255,0.08);
+        }
+
+        /* --- BỘ LỌC DANH MỤC (FILTER TABS) --- */
+        .filter-section {
+            max-width: 1300px;
+            margin: 2rem auto 0;
+            padding: 0 1.5rem;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 1rem;
+            background: #EDE7DC;
+            padding: 0.4rem;
+            border-radius: 8px;
+            width: fit-content;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            font-weight: 600;
+            color: var(--text-main);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: #FFF;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* --- BỐ CỤC CHÍNH (MAIN LAYOUT) --- */
+        .main-layout {
+            max-width: 1300px;
+            margin: 1.5rem auto 4rem;
+            padding: 0 1.5rem;
+            display: grid;
+            grid-template-columns: 2.8fr 1.2fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            padding-bottom: 0.6rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--secondary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .catalog-space {
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+        }
+
+        /* --- DANH SÁCH SẢN PHẨM (PRODUCT GRID) --- */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-sm);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .image-box {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            background-color: #E2DDD5;
+            overflow: hidden;
+        }
+
+        .image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .product-card:hover .image-box img {
+            transform: scale(1.08);
+        }
+
+        .tag-badge {
+            position: absolute;
+            top: 0.8rem;
+            left: 0.8rem;
+            background-color: rgba(36, 29, 28, 0.85);
+            color: var(--secondary-color);
+            padding: 0.2rem 0.6rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 4px;
+            border: 1px solid var(--secondary-color);
+            backdrop-filter: blur(4px);
+        }
+
+        .product-details {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .product-name {
+            font-size: 1.15rem;
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        .product-intro {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1.2rem;
+            flex-grow: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .price-text {
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            font-weight: 800;
+        }
+
+        .add-cart-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.65rem 1.2rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .add-cart-btn:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* --- GIỎ HÀNG THÔNG MINH (SIDEBAR CART) --- */
+        .cart-container {
+            background: var(--card-bg);
+            border: 2px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 6.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .cart-scroll-area {
+            max-height: 360px;
+            overflow-y: auto;
+            margin: 1rem 0;
+            padding-right: 0.3rem;
+        }
+
+        .cart-scroll-area::-webkit-scrollbar {
+            width: 5px;
+        }
+        .cart-scroll-area::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        .cart-node {
+            display: flex;
+            gap: 0.8rem;
+            padding: 0.9rem 0;
+            border-bottom: 1px dashed var(--border-color);
+            align-items: center;
+        }
+
+        .cart-node-img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .cart-node-meta {
+            flex-grow: 1;
+        }
+
+        .cart-node-meta h4 {
+            font-size: 0.9rem;
+            color: var(--dark-color);
+            font-weight: 600;
+            margin-bottom: 0.15rem;
+        }
+
+        .cart-node-meta p {
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .qty-box {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--light-color);
+            padding: 0.2rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+        }
+
+        .qty-btn {
+            background: white;
+            border: 1px solid var(--border-color);
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .qty-btn:hover {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: var(--dark-color);
+        }
+
+        .qty-num {
+            font-size: 0.85rem;
+            min-width: 18px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .bill-zone {
+            border-top: 2px solid var(--border-color);
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+
+        .bill-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .grand-total {
+            font-size: 1.4rem;
+            color: var(--primary-color);
+            font-weight: 800;
+        }
+
+        .checkout-btn {
+            background-color: var(--secondary-color);
+            color: var(--dark-color);
+            border: none;
+            padding: 0.9rem;
+            border-radius: 6px;
+            width: 100%;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .empty-status {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        /* --- CHÂN TRANG (FOOTER) --- */
+        footer {
+            background-color: var(--dark-color);
+            color: #A59B99;
+            padding: 3rem 1.5rem;
+            font-size: 0.9rem;
+            border-top: 4px solid var(--secondary-color);
+        }
+
+        .footer-wrap {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-links a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            color: #FFF;
+            text-decoration: underline;
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-container">
+            <div class="logo-area">
+                <span class="logo-icon">🏮</span>
+                <div class="logo-text">
+                    <h1>VIETNAM HERITAGE</h1>
+                    <p>Khám Phá Kinh Kỳ - Gìn Giữ Cổ Tích</p>
+                </div>
+            </div>
+            <nav>
+                <a href="#">Trang Chủ</a>
+                <a href="#" class="active">Vé & Trải Nghiệm</a>
+                <a href="#">Blog Di Sản</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="filter-section">
+        <div class="filter-tabs">
+            <button class="tab-btn active" onclick="filterCatalog('all', this)">Tất cả di sản</button>
+            <button class="tab-btn" onclick="filterCatalog('tangible', this)">🎟️ Danh mục A (Vé Tour)</button>
+            <button class="tab-btn" onclick="filterCatalog('intangible', this)">🏺 Danh mục B (Quà Đặc Sản)</button>
+        </div>
+    </div>
+
+    <main class="main-layout">
+        
+        <div class="catalog-space">
+            
+            <section id="sec-tangible">
+                <h2 class="section-title">🏛️ Danh Mục A: Vé Tham Quan & Tour Trải Nghiệm Thực Tế</h2>
+                <div class="product-grid">
+                    
+                    <div class="product-card" data-id="HUE_01" data-name="Vé Tham Quan Quần Thể Cố Đô Huế" data-price="200000" data-img="https://images.unsplash.com/photo-1571471804137-9759be1cbf1a?auto=format&fit=crop&w=600&q=80">
+                        <div class="image-box">
+                            <span class="tag-badge">Cố Đô Huế</span>
+                            <img src="https://images.unsplash.com/photo-1571471804137-9759be1cbf1a?auto=format&fit=crop&w=600&q=80" alt="Cố đô Huế">
+                        </div>
+                        <div class="product-details">
+                            <h3 class="product-name">Vé Tham Quan Đại Nội & Lăng Tẩm Triều Nguyễn</h3>
+                            <p class="product-intro">Khám phá kiến trúc hoàng cung cổ kính, hệ thống cung điện, lăng tẩm mang đậm dấu ấn lịch sử kiến trúc hoàng gia nhà Nguyễn.</p>
+                            <div class="price-row">
+                                <span class="price-text">200.000 đ</span>
+                                <button class="add-cart-btn" onclick="addItemToCart('HUE_01')">Đặt vé ➕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card" data-id="HOIAN_01" data-name="Tour Thuyền Hoa Đăng Sông Hoài" data-price="150000" data-img="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80">
+                        <div class="image-box">
+                            <span class="tag-badge">Hội An</span>
+                            <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=600&q=80" alt="Sông Hoài Hội An">
+                        </div>
+                        <div class="product-details">
+                            <h3 class="product-name">Tour Thuyền Thả Đèn Hoa Đăng Sông Hoài</h3>
+                            <p class="product-intro">Ngồi thuyền gỗ mộc ngắm Phố cổ Hội An về đêm lung linh ánh đèn và tự tay thả những chiếc đèn giấy mang lời cầu nguyện tốt lành.</p>
+                            <div class="price-row">
+                                <span class="price-text">150.000 đ</span>
+                                <button class="add-cart-btn" onclick="addItemToCart('HOIAN_01')">Đặt vé ➕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card" data-id="MYSON_01" data-name="Vé Tham Quan Thánh Địa Mỹ Sơn" data-price="130000" data-img="https://images.unsplash.com/photo-1589308078059-be1415eab4c3?auto=format&fit=crop&w=600&q=80">
+                        <div class="image-box">
+                            <span class="tag-badge">Champa</span>
+                            <img src="https://images.unsplash.com/photo-1589308078059-be1415eab4c3?auto=format&fit=crop&w=600&q=80" alt="Thánh địa Mỹ Sơn">
+                        </div>
+                        <div class="product-details">
+                            <h3 class="product-name">Vé Khám Phá Quần Thể Tháp Chàm Mỹ Sơn</h3>
+                            <p class="product-intro">Chiêm ngưỡng tháp gạch Chăm Pa cổ đại huyền biến giữa thung lũng, tìm hiểu kỹ thuật xây dựng kỳ bí của người xưa.</p>
+                            <div class="price-row">
+                                <span class="price-text">130.000 đ</span>
+                                <button class="add-cart-btn" onclick="addItemToCart('MYSON_01')">Đặt vé ➕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="sec-intangible">
+                <h2 class="section-title">🏺 Danh Mục B: Quà Lưu Niệm & Đặc Sản Văn Hóa Việt</h2>
+                <div class="product-grid">
+                    
+                    <div class="product-card" data-id="GIFT_01" data-name="Đèn Lồng Hội An Vải Lụa Tơ Tằm" data-price="110000" data-img="https://images.unsplash.com/photo-1605335191255-e4df73f4ba0d?auto=format&fit=crop&w=600&q=80">
+                        <div class="image-box">
+                            <span class="tag-badge">Quà Lưu Niệm</span>
+                            <img src="https://images.unsplash.com/photo-1605335191255-e4df73f4ba0d?auto=format&fit=crop&w=600&q=80" alt="Đèn lồng Hội An">
+                        </div>
+                        <div class="product-details">
+                            <h3 class="product-name">Đèn Lồng Lụa Tơ Tằm Thủ Công</h3>
+                            <p class="product-intro">Sản phẩm do nghệ nhân Hội An chế tác từ khung tre già uốn gập chắc chắn, bọc lụa Hà Đông tạo ánh sáng ấm áp, thanh tao.</p>
+                            <div class="price-row">
+                                <span class="price-text">110.000 đ</span>
+                                <button class="add-cart-btn" onclick="addItemToCart('GIFT_01')">Thêm vào giỏ ➕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card" data-id="GIFT_02" data-name="Hộp Trà Thảo Mộc Vị Mót" data-price="75000" data-img="https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80">
+                        <div class="image-box">
+                            <span class="tag-badge">Ẩm Thực</span>
+                            <img src="https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80" alt="Trà thảo mộc Việt">
+                        </div>
+                        <div class="product-details">
+                            <h3 class="product-name">Hộp Trà Mót Thảo Mộc Phố Cổ</h3>
+                            <p class="product-intro">Hương vị trà đặc sản kết hợp sả, chanh, cam thảo và lá sen sấy khô theo công thức gia truyền giúp giải nhiệt cơ thể.</p>
+                            <div class="price-row">
+                                <span class="price-text">75.000 đ</span>
+                                <button class="add-cart-btn" onclick="addItemToCart('GIFT_02')">Thêm vào giỏ ➕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card" data-id="GIFT_03" data-name="Đĩa Gốm Chu Đậu Khảm Hoa Văn" data-price="450000" data-img="https://images.unsplash.com/photo-1610701596007-11502861afaa?auto=format&fit=crop&w=600&q=80">
+                        <div class="image-box">
+                            <span class="tag-badge">Gốm Cổ</span>
+                            <img src="https://images.unsplash.com/photo-1610701596007-11502861afaa?auto=format&fit=crop&w=600&q=80" alt="Gốm sứ Việt Nam">
+                        </div>
+                        <div class="product-details">
+                            <h3 class="product-name">Đĩa Gốm Chu Đậu Phục Dựng Men Rạn</h3>
+                            <p class="product-intro">Dòng gốm cổ mang bản sắc văn hóa Việt Nam với lớp men rạn đặc trưng, họa tiết vẽ tay tả cảnh sơn thủy bình yên.</p>
+                            <div class="price-row">
+                                <span class="price-text">450.000 đ</span>
+                                <button class="add-cart-btn" onclick="addItemToCart('GIFT_03')">Thêm vào giỏ ➕</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+
+        <aside>
+            <div class="cart-container">
+                <h2 class="section-title" style="margin-bottom:0.5rem;">🛒 Giỏ Hàng Chọn Lựa</h2>
+                
+                <div id="cart-nodes-view" class="cart-scroll-area">
+                    </div>
+
+                <div class="bill-zone">
+                    <div class="bill-row">
+                        <span>Tổng số lượng:</span>
+                        <span id="bill-qty-sum">0</span>
+                    </div>
+                    <div class="bill-row">
+                        <span>Thành tiền:</span>
+                        <span id="bill-money-sum" class="grand-total">0 đ</span>
+                    </div>
+                    <button class="checkout-btn" onclick="handleCheckout()">Tiến Hành Thanh Toán</button>
+                </div>
+            </div>
+        </aside>
+
+    </main>
+
+    <footer>
+        <div class="footer-wrap">
+            <div class="footer-links">
+                <a href="#">Về Dự Án Cổ Tích Việt Nam</a>
+                <a href="#">Bản Đồ Hệ Thống Di Sản</a>
+                <a href="#">Trung Tâm Hỗ Trợ Khách Tham Quan</a>
+                <a href="#">Bản Quyền Hình Ảnh</a>
+            </div>
+            <p class="copyright">© 2026 Bản mẫu Front-end Cửa Hàng Di Sản Văn Hóa Việt Nam. Trình duyệt ghi nhớ trạng thái qua LocalStorage.</p>
+        </div>
+    </footer>
+
+    <script>
+        // BƯỚC 1: Đọc dữ liệu giỏ hàng cũ được lưu trong bộ nhớ Trình duyệt (nếu có) để duy trì trạng thái khi F5
+        let myCartStorage = JSON.parse(localStorage.getItem('vietnam_heritage_shop_cart')) || [];
+
+        // BƯỚC 2: Hàm đồng bộ và lưu lại dữ liệu mới vào LocalStorage mỗi khi có thay đổi
+        function synchronizeStorage() {
+            localStorage.setItem('vietnam_heritage_shop_cart', JSON.stringify(myCartStorage));
+            updateCartUI();
+        }
+
+        // BƯỚC 3: Hàm thêm vật phẩm mới vào giỏ hàng dựa trên các thuộc tính HTML
+        function addItemToCart(id) {
+            const cardDOM = document.querySelector(`.product-card[data-id="${id}"]`);
+            const name = cardDOM.getAttribute('data-name');
+            const price = parseInt(cardDOM.getAttribute('data-price'));
+            const img = cardDOM.getAttribute('data-img');
+
+            const matchNode = myCartStorage.find(node => node.id === id);
+
+            if (matchNode) {
+                matchNode.quantity += 1; // Nếu có rồi thì tăng số lượng
+            } else {
+                myCartStorage.push({ // Nếu chưa có thì đẩy object mới vào mảng
+                    id: id,
+                    name: name,
+                    price: price,
+                    img: img,
+                    quantity: 1
+                });
+            }
+            synchronizeStorage();
+        }
+
+        // BƯỚC 4: Hàm tăng/giảm số lượng trực tiếp trong hộp điều khiển giỏ hàng
+        function modifyNodeQty(id, delta) {
+            const matchNode = myCartStorage.find(node => node.id === id);
+            if (matchNode) {
+                matchNode.quantity += delta;
+                if (matchNode.quantity <= 0) {
+                    // Xóa hoàn toàn khỏi mảng nếu số lượng giảm về bằng hoặc nhỏ hơn 0
+                    myCartStorage = myCartStorage.filter(node => node.id !== id);
+                }
+                synchronizeStorage();
+            }
+        }
+
+        // BƯỚC 5: Hàm kết xuất dữ liệu và render giao diện giỏ hàng thời gian thực
+        function updateCartUI() {
+            const viewWrapper = document.getElementById('cart-nodes-view');
+            const qtySumDOM = document.getElementById('bill-qty-sum');
+            const moneySumDOM = document.getElementById('bill-money-sum');
+
+            if (myCartStorage.length === 0) {
+                viewWrapper.innerHTML = `<div class="empty-status">Giỏ hàng của bạn đang trống.<br>Hãy chọn dịch vụ di sản bên trái!</div>`;
+                qtySumDOM.innerText = '0';
+                moneySumDOM.innerText = '0 đ';
+                return;
+            }
+
+            let viewHTML = '';
+            let totalQty = 0;
+            let totalMoney = 0;
+
+            myCartStorage.forEach(node => {
+                const subTotal = node.price * node.quantity;
+                totalQty += node.quantity;
+                totalMoney += subTotal;
+
+                viewHTML += `
+                    <div class="cart-node">
+                        <img src="${node.img}" class="cart-node-img" alt="${node.name}">
+                        <div class="cart-node-meta">
+                            <h4>${node.name}</h4>
+                            <p>${node.price.toLocaleString('vi-VN')} đ</p>
+                        </div>
+                        <div class="qty-box">
+                            <button class="qty-btn" onclick="modifyNodeQty('${node.id}', -1)">-</button>
+                            <span class="qty-num">${node.quantity}</span>
+                            <button class="qty-btn" onclick="modifyNodeQty('${node.id}', 1)">+</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            viewWrapper.innerHTML = viewHTML;
+            qtySumDOM.innerText = totalQty;
+            moneySumDOM.innerText = totalMoney.toLocaleString('vi-VN') + ' đ';
+        }
+
+        // BƯỚC 6: Xử lý chức năng Bộ lọc Tab nhanh (Ẩn / Hiện các section)
+        function filterCatalog(type, btnElement) {
+            // Thay đổi trạng thái class active của nút bấm tab
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            const secA = document.getElementById('sec-tangible');
+            const secB = document.getElementById('sec-intangible');
+
+            if (type === 'all') {
+                secA.style.display = 'block';
+                secB.style.display = 'block';
+            } else if (type === 'tangible') {
+                secA.style.display = 'block';
+                secB.style.display = 'none';
+            } else if (type === 'intangible') {
+                secA.style.display = 'none';
+                secB.style.display = 'block';
+            }
+        }
+
+        // BƯỚC 7: Hàm xử lý hành động khi ấn nút thanh toán giả lập
+        function handleCheckout() {
+            if(myCartStorage.length === 0) {
+                alert('Vui lòng thêm ít nhất một sản phẩm di sản vào giỏ hàng trước khi thanh toán!');
+            } else {
+                alert('Hệ thống Prototype Demo: Đã ghi nhận giỏ hàng của bạn thành công trên bộ nhớ cục bộ!');
+            }
+        }
+
+        // BƯỚC TỰ ĐỘNG KHỞI CHẠY: Nạp giỏ hàng đã lưu ngay khi người dùng vừa mở trang web lên
+        window.onload = function() {
+            updateCartUI();
+        };
+    </script>
+</body>
+</html>
